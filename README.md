@@ -1,0 +1,2 @@
+# budman
+Simple Budget Manager
