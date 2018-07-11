@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -49,6 +51,16 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="author")
+     */
+    private $projects;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
 
 	public function getId(): int
 	{
@@ -130,4 +142,68 @@ class User implements UserInterface
 	{
 
 	}
+ private $__EXTRA__LINE;
+ /**
+  * @ORM\Column(type="datetime", nullable=true)
+  */
+ private $date_creation;
+ /**
+  * @return Collection|Project[]
+  */
+ public function getProjects(): Collection
+ {
+     return $this->projects;
+ }
+//  private $__EXTRA__LINE;
+ public function addProject(Project $project): self
+ {
+     if (!$this->projects->contains($project)) {
+         $this->projects[] = $project;
+         $project->setAuthor($this);
+     }
+     $__EXTRA__LINE;
+     return $this;
+ }
+//  private $__EXTRA__LINE;
+ public function removeProject(Project $project): self
+ {
+     if ($this->projects->contains($project)) {
+         $this->projects->removeElement($project);
+         // set the owning side to null (unless already changed)
+         if ($project->getAuthor() === $this) {
+             $project->setAuthor(null);
+         }
+     }
+     $__EXTRA__LINE;
+     return $this;
+ }
+// private $__EXTRA__LINE;
+public function getDateCreation(): ?\DateTimeInterface
+{
+    return $this->date_creation;
+}
+// private $__EXTRA__LINE;
+// private $__EXTRA__LINE;
+/**
+ * @ORM\Column(type="datetime", nullable=true)
+ */
+private $last_updated;
+public function setDateCreation(?\DateTimeInterface $date_creation): self
+{
+    $this->date_creation = $date_creation;
+    $__EXTRA__LINE;
+    return $this;
+}
+// private $__EXTRA__LINE;
+public function getLastUpdated(): ?\DateTimeInterface
+{
+    return $this->last_updated;
+}
+// private $__EXTRA__LINE;
+public function setLastUpdated(?\DateTimeInterface $last_updated): self
+{
+    $this->last_updated = $last_updated;
+    $__EXTRA__LINE;
+    return $this;
+}
 }

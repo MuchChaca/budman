@@ -2,16 +2,17 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use App\Entity\User;
+use App\Utils\Roles;
+use App\Form\UserType;
+use App\Event\EmailRegistrationUserEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use App\Form\UserType;
-use App\Entity\User;
-use App\Event\EmailRegistrationUserEvent;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class RegistrationController extends FOSRestController
 {
@@ -29,7 +30,7 @@ class RegistrationController extends FOSRestController
             $password = $this->get('security.password_encoder')
                 ->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
-            $user->setRoles(['ROLE_ADMIN']);
+            $user->setRoles([Roles::BASIC]);
             $em = $this->getDoctrine()->getManager();
 
             $event = new EmailRegistrationUserEvent($user);
