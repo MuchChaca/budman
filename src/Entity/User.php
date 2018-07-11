@@ -1,210 +1,133 @@
 <?php
-// https://symfony.com/doc/current/security/guard_authentication.html
-// https://symfony.com/doc/current/security/entity_provider.html
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * User
+ *
+ * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="app_user")
  */
 class User implements UserInterface
 {
     /**
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string")
      */
-    private $l_name;
+    private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string")
      */
-    private $f_name;
+    private $surname;
 
     /**
-     * @ORM\Column(name="username", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string")
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $password;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $tk;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string")
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string")
      */
-    private $roles;
+    private $password;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(type="json")
      */
-	private $isActive;
+    private $roles = [];
 
-    public function __construct($isActive) {
-        $this->isActive = true;
-        // may not be needed, see section on salt below
-        // $this->salt = md5(uniqid('', true));
-    }
-
-
-    public function getSalt()
-    {
-    }
-    public function eraseCredentials()
-    {
-    }
-
-    /** @see \Serializable::serialize() */
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
-            // $this->salt,
-        ));
-    }
-
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
-            // $this->salt
-        ) = unserialize($serialized, array('allowed_classes' => false));
-    }
-
-    //===========================================
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getLName(): ?string
-    {
-        return $this->l_name;
-    }
-
-    public function setLName(?string $l_name): self
-    {
-        $this->l_name = $l_name;
-
-        return $this;
-    }
-
-    public function getFName(): ?string
-    {
-        return $this->f_name;
-    }
-
-    public function setFName(?string $f_name): self
-    {
-        $this->f_name = $f_name;
-
-        return $this;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(?string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(?string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getTk(): ?string
-    {
-        return $this->tk;
-    }
-
-    public function setTk(?string $tk): self
-    {
-        $this->tk = $tk;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getRoles(): ?string
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(?string $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-	/**
-	 * Get the value of isActive
-	 */ 
-	public function getIsActive()
+	public function getId(): int
 	{
-		return $this->isActive;
+		return $this->id;
 	}
 
-	/**
-	 * Set the value of isActive
-	 *
-	 * @return  self
-	 */ 
-	public function setIsActive($isActive)
+	public function setName(string $name): void
 	{
-		$this->isActive = $isActive;
+		$this->name = $name;
+	}
 
-		return $this;
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
+
+	public function setSurname(string $surname): void
+	{
+		$this->surname = $surname;
+	}
+
+	public function getSurname(): ?string
+	{
+		return $this->surname;
+	}
+
+	public function setUsername(string $username): void
+	{
+		$this->username = $username;
+	}
+
+	public function getUsername(): ?string
+	{
+		return $this->username;
+	}
+
+	public function setEmail(string $email): void
+	{
+		$this->email = $email;
+	}
+
+	public function getEmail(): ?string
+	{
+		return $this->email;
+	}
+
+	public function setPassword(string $password): void
+	{
+		$this->password = $password;
+	}
+
+	public function getPassword(): ?string
+	{
+		return $this->password;
+	}
+
+	public function getRoles(): array
+	{
+		$roles = $this->roles;
+
+		if (empty($roles)) {
+			$roles[] = 'ROLE_USER';
+		}
+
+		return array_unique($roles);
+	}
+
+	public function setRoles(array $roles): void
+	{
+		$this->roles = $roles;
+	}
+
+	public function getSalt(): ?string
+	{
+		return null;
+	}
+
+	public function eraseCredentials(): void
+	{
+
 	}
 }
