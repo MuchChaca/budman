@@ -187,11 +187,15 @@ public function getDateCreation(): ?\DateTimeInterface
 /**
  * @ORM\Column(type="datetime", nullable=true)
  */
-private $last_updated;
+
+/**
+ * @ORM\Column(type="string", length=255, nullable=true)
+ */
+private $token;
 public function setDateCreation(?\DateTimeInterface $date_creation): self
 {
     $this->date_creation = $date_creation;
-    $__EXTRA__LINE;
+    
     return $this;
 }
 // private $__EXTRA__LINE;
@@ -203,7 +207,19 @@ public function getLastUpdated(): ?\DateTimeInterface
 public function setLastUpdated(?\DateTimeInterface $last_updated): self
 {
     $this->last_updated = $last_updated;
-    $__EXTRA__LINE;
+    
+    return $this;
+}
+
+public function getToken(): ?string
+{
+    return $this->token;
+}
+
+public function setToken(?string $token): self
+{
+    $this->token = $token;
+    
     return $this;
 }
 }

@@ -5,6 +5,22 @@ namespace App\Utils;
 final class HTTP {
 
 	/**
+	 * Continue	The server has received the request headers, and the client should proceed to send the request body
+	 */
+	const CONTINUE = 100;
+	
+	/**
+	 * Switching Protocols	The requester has asked the server to switch protocols
+	 */
+	const SWITCH_PROTOCOL = 101;
+	
+	/**
+	 * Checkpoint	Used in the resumable requests proposal to resume aborted PUT or POST requests
+	 */
+	const CHECKPOINT = 103;
+	
+
+	/**
 	 * The request was fulfilled.
 	 */
 	const OK = 200;
@@ -121,12 +137,51 @@ final class HTTP {
 	 *
 	 * Response headers are as if the client had sent a HEAD request, but limited to only those headers which make sense in this context. This means only headers that are relevant to cache managers and which may have changed independently of the document's Last-Modified date. Examples include Date , Server and Expires .
 	 */
-	const Not_Modified = 304;
+	const NOT_MODIFIED = 304;
+
+	private const CODES = [
+		// 1XX
+		HTTP::CONTINUE				=> "The server has received the request headers, and the client should proceed to send the request body",
+		HTTP::SWITCH_PROTOCOL	=> "The requester has asked the server to switch protocols",
+		HTTP::CHECKPOINT			=> "Used in the resumable requests proposal to resume aborted PUT or POST requests",
+		// 2XX
+		HTTP::OK						=> "The request is OK (this is the standard response for successful HTTP requests)",
+		HTTP::CREATED				=> "The request has been fulfilled, and a new resource is created ",
+		HTTP::ACCEPTED				=> "The request has been accepted for processing, but the processing has not been completed",
+		HTTP::PARTIAL_INFORMATION => "The server is delivering only part of the resource due to a range header sent by the client",
+		HTTP::NO_RESPONSE			=> "The request has been successfully processed, but is not returning any content",
+		// 3XX
+		HTTP::MOVED					=> "The requested page has moved to a new URL",
+		HTTP::FOUND					=> "The requested page has moved temporarily to a new URL",
+		HTTP::METHOD				=> "",
+		HTTP::NOT_MODIFIED		=> "Indicates the requested page has not been modified since last requested",
+		// 4XX
+		HTTP::BAD_REQUEST			=> "The request cannot be fulfilled due to bad syntax",
+		HTTP::UNAUTHORIZED		=> "The request was a legal request, but the server is refusing to respond to it. For use when authentication is possible but has failed or not yet been provided",
+		HTTP::PAYMENT_REQUIRED	=> "Reserved for future use",
+		HTTP::FORBIDDEN			=> "The request was a legal request, but the server is refusing to respond to it",
+		HTTP::NOT_FOUND			=> "The requested page could not be found but may be available again in the future",
+		// 5XX
+		HTTP::INTERNAL_ERROR		=> "A generic error message, given when no more specific message is suitable",
+		HTTP::NOT_IMPLEMENTED	=> "The server either does not recognize the request method, or it lacks the ability to fulfill the request",
+		HTTP::OVERLOADED			=> "",
+		HTTP::GATEWAY_TIMEOUT	=> "	The server was acting as a gateway or proxy and did not receive a timely response from the upstream server",
+	];
 
 	/**
 	 * This class can't be instanciated !
 	 */
 	private function __construct() {
 		// empty, can't be instanciated
+	}
+
+	/**
+	 * Returns the associated message to the HTTP code.
+	 *
+	 * @param integer $code
+	 * @return string
+	 */
+	static function MESSAGE(int $code) : string {
+		return HTTP::CODES[$code];
 	}
 }

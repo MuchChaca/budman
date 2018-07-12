@@ -41,7 +41,7 @@ class RegistrationController extends FOSRestController
             $em->persist($user);
             $em->flush();
 
-            return new JsonResponse(['status' => 'ok', 'code' => HTTP::OK]);
+            return new JsonResponse(['message' => HTTP::MESSAGE(HTTP::OK), 'code' => HTTP::OK]);
         }
 
         throw new HttpException(HTTP::BAD_REQUEST, "Invalid data");

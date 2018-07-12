@@ -30,32 +30,41 @@ class CategoryController extends Controller
 	  */
 	 public function new(Request $request): JsonResponse
 	 {
-			$code = HTTP::NO_RESPONSE; // default code
-			$msg = '';
+		// default 
+		$code = HTTP::NO_RESPONSE; 
+		$msg = '';
 
-			$category;
-			try {
-				$category = new Category();
-				$form = $this->createForm(CategoryType::class, $category);
-				$form->handleRequest($request);
-	 
-				if ($form->isSubmitted() && $form->isValid()) {
-					$em = $this->getDoctrine()->getManager();
-					$em->persist($category);
-					$em->flush();
-				}
+		$category = null;
+
+		try {
+			$category = new Category();
+			$form = $this->createForm(CategoryType::class, $category);
+			$form->handleRequest($request);
+	
+			if ($form->isSubmitted() && $form->isValid()) {
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($category);
+				$em->flush();
+				
+				// success
 				$code = HTTP::CREATED;
-		  } catch (Exception $ex) {
-				$code = HTTP::INTERNAL_ERROR;
-				$msg = $ex->getMessage();
-		  }
 
-		  return new JsonResponse([
-				'code'		=> $code,
-				'message'	=> $msg,
-				'data'		=> ['category' => $category],
-		  ]);
-	 }
+			} elseif(!$form->isValid() && $form->isSubmitted()) {
+				// non valid form
+				$code = HTTP::BAD_REQUEST;
+			}
+		} catch (Exception $ex) {
+			// Unsuspected error
+			$code = HTTP::INTERNAL_ERROR;
+			$msg = $ex->getMessage();
+		}
+
+		return new JsonResponse([
+			'code'		=> $code,
+			'message'	=> $msg,
+			'data'		=> ['category' => $category],
+		]);
+	}
 
 	 /**
 	  * @Route("/{id}", name="category_show", methods="GET")
