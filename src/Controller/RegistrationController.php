@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Utils\Roles;
 use App\Form\UserType;
+use App\Form\HTTP;
 use App\Event\EmailRegistrationUserEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,9 +41,9 @@ class RegistrationController extends FOSRestController
             $em->persist($user);
             $em->flush();
 
-            return new JsonResponse(['status' => 'ok']);
+            return new JsonResponse(['status' => 'ok', 'code' => HTTP::OK]);
         }
 
-        throw new HttpException(400, "Invalid data");
+        throw new HttpException(HTTP::BAD_REQUEST, "Invalid data");
     }
 }
