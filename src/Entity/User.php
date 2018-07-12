@@ -142,11 +142,12 @@ class User implements UserInterface
 	{
 
 	}
- private $__EXTRA__LINE;
+    
  /**
   * @ORM\Column(type="datetime", nullable=true)
   */
  private $date_creation;
+
  /**
   * @return Collection|Project[]
   */
@@ -154,17 +155,17 @@ class User implements UserInterface
  {
      return $this->projects;
  }
-//  private $__EXTRA__LINE;
+ 
  public function addProject(Project $project): self
  {
      if (!$this->projects->contains($project)) {
          $this->projects[] = $project;
          $project->setAuthor($this);
      }
-     $__EXTRA__LINE;
+     
      return $this;
  }
-//  private $__EXTRA__LINE;
+ 
  public function removeProject(Project $project): self
  {
      if ($this->projects->contains($project)) {
@@ -174,7 +175,7 @@ class User implements UserInterface
              $project->setAuthor(null);
          }
      }
-     $__EXTRA__LINE;
+     
      return $this;
  }
 // private $__EXTRA__LINE;
@@ -187,23 +188,22 @@ public function getDateCreation(): ?\DateTimeInterface
 /**
  * @ORM\Column(type="datetime", nullable=true)
  */
+private $last_updated;
 
-/**
- * @ORM\Column(type="string", length=255, nullable=true)
- */
-private $token;
+
+
 public function setDateCreation(?\DateTimeInterface $date_creation): self
 {
     $this->date_creation = $date_creation;
     
     return $this;
 }
-// private $__EXTRA__LINE;
+
 public function getLastUpdated(): ?\DateTimeInterface
 {
     return $this->last_updated;
 }
-// private $__EXTRA__LINE;
+
 public function setLastUpdated(?\DateTimeInterface $last_updated): self
 {
     $this->last_updated = $last_updated;
@@ -211,15 +211,4 @@ public function setLastUpdated(?\DateTimeInterface $last_updated): self
     return $this;
 }
 
-public function getToken(): ?string
-{
-    return $this->token;
-}
-
-public function setToken(?string $token): self
-{
-    $this->token = $token;
-    
-    return $this;
-}
 }

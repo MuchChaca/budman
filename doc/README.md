@@ -49,3 +49,14 @@ An API Boilerplate to create a ready-to-use REST API in seconds with Symfony 4.1
 
 ## Additional dependencies
 * ``composer require validator``
+
+## Install
+1. clone project
+2. follow previous directives
+3. add the passphrase in ``.env``
+
+
+## Migration
+:point_right: When using ``bin/console make:migration`` replace all ``JSON`` types of the Migration file by ``TEXT``.
+
+:heavy_check_mark: You are ready to ``bin/console doctrine:migrations:migrate``.

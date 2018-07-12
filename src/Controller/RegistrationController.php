@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Utils\Roles;
 use App\Form\UserType;
-use App\Form\HTTP;
+use App\Utils\HTTP;
 use App\Event\EmailRegistrationUserEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
