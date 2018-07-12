@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Tag;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
+class TagType extends AbstractType
+{
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('label', TextType::class, ['label' => 'label'])
+			->add('description', TextType::class, ['label' => 'description'])
+			->add('entries')
+			// ->add('date_creation')
+			// ->add('last_updated')
+		;
+	}
+
+	/**
+     * {@inheritdoc}
+	*/
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'data_class' 		=> Tag::class,
+			'csrf_protection'	=> false,
+		]);
+	}
+
+	/**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return '';
+    }
+}

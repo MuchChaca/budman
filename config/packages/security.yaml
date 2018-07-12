@@ -19,12 +19,17 @@ security:
             http_basic: ~
             guard:
                 authenticators:
-                    - App\Security\JwtAuthenticator
+                    # - App\Security\JwtAuthenticator
+                    - lexik_jwt_authentication.jwt_token_authenticator
             # activate different ways to authenticate
 
             # http_basic: ~
             # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
     access_control:
         - { path: ^/api/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLES_USER }
+        - { path: ^/, roles: ROLES_ADMIN }
             # form_login: ~
             # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
