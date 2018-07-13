@@ -86,7 +86,8 @@ class TagController extends FOSRestController
 	 */
 	public function show(Tag $tag): Response
 	{
-		
+		// dump($tag);
+
 		$exception = '';
 		// Response
 		$ctnt = [
@@ -134,7 +135,6 @@ class TagController extends FOSRestController
 			$code = HTTP::INTERNAL_ERROR;
 			$exception = $ex->getMessage();
 		}
-
 
 		// Response
 		$ctnt = [
